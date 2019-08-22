@@ -5,9 +5,12 @@ from gi.repository import Gtk
 class Handler:
 	def onDestroy(self, *args):
 		Gtk.main_quit()
-
-	def onNew(self, *args):
-		print("Novo?")
+	
+	def loadTileset(self, *args):
+		print("load")
+	
+	def addLayer(self, *args):
+		print("add")
 
 builder = Gtk.Builder()
 builder.add_from_file("window.glade")
