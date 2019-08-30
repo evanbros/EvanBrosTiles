@@ -8,7 +8,7 @@ builder.add_from_file("template/window.glade")
 
 window = builder.get_object("mainwindow")
 
-builder.connect_signals(Handler(builder, window))
+builder.connect_signals(Handler(builder))
 
 window.maximize()
 window.show_all()
