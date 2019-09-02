@@ -1,8 +1,10 @@
 from gi.repository import Gtk
+from resources.widgets.LoadTilesetWidget import LoadTilesetWidget
 
 class Handler:
     def __init__(self, builder):
         self.builder = builder
+        self.loadTilesetWidget = LoadTilesetWidget(builder)
 
     def onDestroy(self, *args):
         Gtk.main_quit()
@@ -11,20 +13,7 @@ class Handler:
         print("new")
 
     def loadTilesetDialog(self, *args):
-        widget = self.builder.get_object("loadtilemapdialog")
-        load_button = self.builder.get_object("loadtileset")
-        cancel_button = self.builder.get_object("canceltileset")
-
-        load_button.connect( "clicked", self.loadTileset )
-        cancel_button.connect( "clicked", self.cancelTileset, widget )
-
-        widget.show()
-
-    def loadTileset(self, *args):
-        print('oooi')
-
-    def cancelTileset(self, button, widget):
-        widget.hide()
+        self.loadTilesetWidget.widget.show()
 
     def file_chooser_open(self, *args):
         dialog = Gtk.FileChooserDialog(
