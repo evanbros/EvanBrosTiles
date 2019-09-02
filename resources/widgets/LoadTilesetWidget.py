@@ -31,9 +31,39 @@ class LoadTilesetWidget:
         try:
             with Image.open(image_path) as image:
                 self.widget.hide()
+                tiles = self.cutImage(image)
+                tiles[0].show()
+
         except AttributeError as error:
             self.ErrorDialog.defineMessageError("You must select an image to load!")
             self.ErrorDialog.dialog.show()
         except OSError as error:
             self.ErrorDialog.defineMessageError("This is not a valid image file!")
             self.ErrorDialog.dialog.show()
+    
+    def cutImage(self, image):
+        width = image.size[0]
+        height = image.size[1]
+        tile_width = self.width_input.get_value_as_int()
+        tile_height = self.height_input.get_value_as_int()
+        cols = int(width / tile_width)
+        rows = int(height / tile_height)
+        image_list = []
+        
+        colinit = 0;
+        colend = tile_width;
+        rowinit = 0;
+        rowend = tile_height;
+        
+        for col in range(cols):
+            colinit += tile_width
+            colend += tile_width
+            for row in range(rows):
+                box = (colinit, rowinit, colend, rowend)
+                region = image.crop(box)
+                image_list.append(region)
+                
+                rowinit += tile_height
+                rowend += tile_height
+
+        return image_list
