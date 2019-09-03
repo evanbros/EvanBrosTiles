@@ -30,12 +30,15 @@ class LoadTilesetWidget:
         
         try:
             with Image.open(image_path) as image:
-                self.widget.hide()
                 tiles = self.cutImage(image)
                 tiles[0].show()
+                self.widget.hide()
 
         except AttributeError as error:
             self.ErrorDialog.defineMessageError("You must select an image to load!")
+            self.ErrorDialog.dialog.show()
+        except IndexError as error:
+            self.ErrorDialog.defineMessageError("The size of tile exced the image size!")
             self.ErrorDialog.dialog.show()
         except OSError as error:
             self.ErrorDialog.defineMessageError("This is not a valid image file!")
