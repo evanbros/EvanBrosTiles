@@ -1,5 +1,6 @@
+import array
 from PIL import Image
-from gi.repository import Gtk
+from gi.repository import Gtk, GdkPixbuf
 from resources.widgets.ErrorDialog import ErrorDialog
 
 class LoadTilesetWidget:
@@ -30,27 +31,29 @@ class LoadTilesetWidget:
         
         try:
             with Image.open(image_path) as image:
-                tiles = self.cutImage(image)
-                tiles[0].show()
+                self.insertImagesInGrid(image)
                 self.widget.hide()
 
         except AttributeError as error:
             self.ErrorDialog.defineMessageError("You must select an image to load!")
             self.ErrorDialog.dialog.show()
+            print(repr(error))
         except IndexError as error:
             self.ErrorDialog.defineMessageError("The size of tile exced the image size!")
             self.ErrorDialog.dialog.show()
+            print(repr(error))
         except OSError as error:
             self.ErrorDialog.defineMessageError("This is not a valid image file!")
             self.ErrorDialog.dialog.show()
+            print(repr(error))
     
     def cutImage(self, image):
         width = image.size[0]
         height = image.size[1]
         tile_width = self.width_input.get_value_as_int()
         tile_height = self.height_input.get_value_as_int()
-        cols = int(width / tile_width)
-        rows = int(height / tile_height)
+        rows = int(width / tile_height)
+        cols = int(height / tile_width)
         image_list = []
         
         colinit = 0;
@@ -59,14 +62,48 @@ class LoadTilesetWidget:
         rowend = tile_height;
         
         for col in range(cols):
-            colinit += tile_width
-            colend += tile_width
             for row in range(rows):
-                box = (colinit, rowinit, colend, rowend)
-                region = image.crop(box)
-                image_list.append(region)
-                
+                outfile = "/var/tmp/evanbrostiles/"+str(row)+"-"+str(col)+".png"
+                box = (rowinit, colinit, rowend, colend)
                 rowinit += tile_height
                 rowend += tile_height
-
+                
+                region = image.crop(box)
+                
+                image_list.append(str(row)+"-"+str(col)+".png")
+                region.save(outfile, "PNG")
+            
+            colinit += tile_width
+            colend += tile_width
+                
+        
         return image_list
+    
+    def insertImagesInGrid(self, image):
+        image_list = self.cutImage(image)
+        view = self.builder.get_object("tilesetview")
+        
+        # CLEAN CHILDREN FROM ELEMENT
+        children = view.get_children();
+        if children:
+            for child_number in range( len(children) ):
+                view.remove( children[child_number] );
+        
+        grid = Gtk.Grid()
+        
+        list_length = len(image_list)
+        rows_length = int(list_length/4)
+        
+        for number_tile in range(list_length):
+            button = Gtk.Button()
+            image = Gtk.Image()
+            
+            image.set_from_file("/var/tmp/evanbrostiles/"+image_list[number_tile])
+
+            button.add(image)
+            
+            grid.attach( button, number_tile, 0, 1, 1 )
+        
+
+        view.add(grid)
+        grid.show_all()

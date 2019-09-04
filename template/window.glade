@@ -191,28 +191,13 @@
                     <property name="label_xalign">0.029999999329447746</property>
                     <property name="shadow_type">out</property>
                     <child>
-                      <object class="GtkViewport">
+                      <object class="GtkViewport" id="tilesetview">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="margin_top">10</property>
                         <property name="margin_bottom">10</property>
                         <child>
-                          <object class="GtkGrid" id="tilesetgrid">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                          </object>
+                          <placeholder/>
                         </child>
                       </object>
                     </child>
