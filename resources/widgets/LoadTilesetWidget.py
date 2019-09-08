@@ -69,9 +69,24 @@ class LoadTilesetWidget:
                 rowend += tile_height
                 
                 region = image.crop(box)
+
+                region_colors = region.getcolors()
                 
-                image_list.append(str(row)+"-"+str(col)+".png")
-                region.save(outfile, "PNG")
+                if len(region_colors) == 1:
+                    region_pixel_colors = region.getcolors()[0][1]
+                    has_colors = False
+
+                    for color in range(len(region_pixel_colors)):
+                        if region_pixel_colors[color] > 0:
+                            has_colors = True
+                    
+                    if has_colors:
+                        image_list.append(str(row)+"-"+str(col)+".png")
+                        region.save(outfile, "PNG")
+                        
+                else:
+                    image_list.append(str(row)+"-"+str(col)+".png")
+                    region.save(outfile, "PNG")
             
             colinit += tile_width
             colend += tile_width
@@ -92,7 +107,7 @@ class LoadTilesetWidget:
         grid = Gtk.Grid()
         
         list_length = len(image_list)
-        rows_length = int(list_length/4)
+        number_row = 0
         
         for number_tile in range(list_length):
             button = Gtk.Button()
@@ -102,8 +117,11 @@ class LoadTilesetWidget:
 
             button.add(image)
             
-            grid.attach( button, number_tile, 0, 1, 1 )
-        
+            grid.attach( button, ( (number_tile + 1) % 4 )-1, number_row, 1, 1 )
+            
 
+            if not(number_tile % 4) :
+                number_row += 1;
+        
         view.add(grid)
         grid.show_all()
