@@ -1,3 +1,3 @@
 # EvanBrosTiles
 
-A simple application to create tilemaps for use in [EvanBrosCE](https://github.com/evanbros/EvanBrosCE).
+A simple application to create tilemaps for use with [EvanBrosCE](https://github.com/evanbros/EvanBrosCE).
