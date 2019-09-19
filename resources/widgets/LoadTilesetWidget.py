@@ -56,10 +56,10 @@ class LoadTilesetWidget:
         cols = int(height / tile_width)
         image_list = []
         
-        colinit = 0;
-        colend = tile_width;
-        rowinit = 0;
-        rowend = tile_height;
+        colinit = 0
+        colend = tile_width
+        rowinit = 0
+        rowend = tile_height
         
         for col in range(cols):
             for row in range(rows):
@@ -84,10 +84,10 @@ class LoadTilesetWidget:
         view = self.builder.get_object("tilesetview")
         
         # CLEAN CHILDREN FROM ELEMENT
-        children = view.get_children();
+        children = view.get_children()
         if children:
             for child_number in range( len(children) ):
-                view.remove( children[child_number] );
+                view.remove( children[child_number] )
         
         grid = Gtk.Grid()
         
